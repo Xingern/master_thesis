@@ -1,9 +1,5 @@
-data/Lysekil_MEA_data_unprotected.xlsx
-data/~$Lysekil_MEA_data_unprotected.xlsx
-data/cached_Lysekil.pkl
-data/raw/~$Lysekil_MEA_data_unprotected.xlsx
-.gitignore
-.gitignore
-figs/Pearson.png
 data/raw/Lysekil_MEA_data_unprotected.xlsx
 data/raw/cached_Lysekil.pkl
+data/raw/~$Lysekil_MEA_data_unprotected.xlsx
+figs/Pearson.png
+.gitignore

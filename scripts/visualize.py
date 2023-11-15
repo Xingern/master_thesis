@@ -1,7 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
+import scipy.stats as stats
 
 def print_df_info(df):
     """
@@ -66,7 +68,8 @@ def dropdown_plot(df):
     # Create a dropdown menu
     buttons = [dict(label=col,
                     method='update', 
-                    args=[{'visible': [i == j for i in range(len(columns))]},{'title': col}]
+                    args=[{'visible': [i == j for i in range(len(columns))]},
+                          {'title': col}]
                     ) 
                for j, col in enumerate(columns)]
     updatemenu = dict(type='dropdown', 
