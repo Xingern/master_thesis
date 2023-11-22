@@ -1,5 +1,4 @@
 import os
-import numpy as np
 import pandas as pd
 
 def lysekil():
@@ -37,5 +36,3 @@ def lysekil():
         raw_df.to_pickle("../data/raw/cached_Lysekil.pkl")
         
     return raw_df
-
-
