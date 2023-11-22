@@ -17,6 +17,16 @@ def print_df_info(df):
     print("Number of rows without NaN values:", nan_count)
     print("Number of rows without negative values:", neg_count)
     
+def print_corr(df, col1, col2, method="pearson"):
+    rho = df[col1].corr(df[col2], method=method)
+    
+    print("\nThe correlation between the following columns")
+    print("---------------------------------------------")
+    print(col1)
+    print(col2)
+    print("ρ =", np.round(rho, 2))
+    print("---------------------------------------------")
+    
 def generate_overview(df):
     """
     Returns a df consisting of NaN counter and output from 
