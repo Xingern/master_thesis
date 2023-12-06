@@ -6,16 +6,6 @@ DROP_COLS = ["Desorber-Packing-TT1030A",
              "Downstream-Lean-PT1010", 
              "Desorber-Packing-TT1030C"]
 
-def convert_to_float_or_nan(value):
-    """
-    Function to convert a single value to float64, or NaN if it can't be 
-    converted
-    """
-    try:
-        return np.float64(value)
-    except (ValueError, TypeError):
-        return np.nan
-
 def initial_clean(raw_df, drop_cols=DROP_COLS):
     """
     The functions does some basic pre-processing of the imported data. 
@@ -33,6 +23,16 @@ def initial_clean(raw_df, drop_cols=DROP_COLS):
     drop_df = raw_df.drop(columns=drop_cols)
     df = drop_nan_neg(drop_df)
     return df.copy()
+
+def convert_to_float_or_nan(value):
+    """
+    Function to convert a single value to float64, or NaN if it can't be 
+    converted
+    """
+    try:
+        return np.float64(value)
+    except (ValueError, TypeError):
+        return np.nan
 
 def drop_nan_neg(df):
     """
