@@ -1,11 +1,5 @@
-data/raw/Lysekil_MEA_data_unprotected.xlsx
-data/raw/cached_Lysekil.pkl
-data/raw/~$Lysekil_MEA_data_unprotected.xlsx
-figs/Pearson.png
-.gitignore
-data/processed/mean_of_stable_periods.xlsx
 .DS_Store
 data/.DS_Store
-data/processed/renamed_Lysekil.pkl
 data/
-/scripts/__pycache__
+figs/
+scripts/__pycache__/
