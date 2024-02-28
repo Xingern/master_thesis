@@ -1,9 +1,11 @@
 import pandas as pd
+import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import numpy as np
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
 import scipy.stats as stats
+import seaborn as sns
 
 def print_df_info(df):
     """
@@ -127,4 +129,60 @@ def qq_plot_all(dataframe, plots_per_row=7):
     for j in range(i + 1, len(axes)):
         fig.delaxes(axes[j])
     
+    plt.show()
+    
+def generate_moisture_df(P_tot, T, P_H2O):
+    Mm_CO2 = 44.01 # g/mol
+    Mm_H2O = 18.02 # g/mol
+    results = []
+    for P in P_tot:
+        # Convert P from barg to bar
+        # Convert PH2O from MPa to bar
+        x_CO2 = 1 - (P_H2O*10) / (P+1) # Mole fraction
+        w_CO2 = x_CO2 * Mm_CO2 / (x_CO2 * Mm_CO2 + (1 - x_CO2) * Mm_H2O ) # Mass fraction
+        results.append(w_CO2)
+
+    moisture_df = pd.DataFrame(results, index=P_tot, columns=T)
+    moisture_df = moisture_df.rename(columns=lambda x: str(x) + "°C").round(3)
+    return moisture_df
+
+def plot_TP_distribution(df):
+    """
+    Plot the distribution of P6 and T10 in a heatmap.
+
+    Args:
+        df (pandas.DataFrame): The input DataFrame containing all PFD data.
+
+    Returns:
+        None
+    """
+    
+    # Picking colormap
+    cmap_name = "viridis"
+    cmap = cm.get_cmap(cmap_name)
+    colormap_list = [cmap(i) for i in range(cmap.N)]
+
+    # Create bins for P6 and T10
+    p6_bins = np.linspace(0.4, 1.2, 6)
+    t10_bins = np.linspace(10, 35, 11)
+
+    # Create a binned DataFrame
+    df_binned = pd.DataFrame({
+        'P6': pd.cut(df['P6'], bins=p6_bins, include_lowest=True, right=False),
+        'T10': pd.cut(df['T10'], bins=t10_bins, include_lowest=True, right=False)
+    })
+
+    # Calculate the percentage of data points in each bin
+    heatmap_data = df_binned.groupby(['P6', 'T10']).size().reset_index(name='count')
+    heatmap_data['percentage'] = 100 * heatmap_data['count'] / len(df)
+    heatmap_pivot = heatmap_data.pivot("P6", "T10", "percentage")
+
+    # Plotting the heatmap
+    plt.figure(figsize=(16, 8), dpi=300)
+    sns.set(font="Verdana")
+    sns.set(rc={'axes.facecolor':colormap_list[0]})
+    sns.heatmap(heatmap_pivot, annot=True, cmap=cmap_name, 
+                fmt=".1f", cbar=True, mask=heatmap_pivot <= 0.15)
+    plt.xlabel("T10 intervals [°C]", labelpad=15)
+    plt.ylabel("P6 intervals [barg]", labelpad=15)
     plt.show()
