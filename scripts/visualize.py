@@ -173,9 +173,9 @@ def plot_TP_distribution(df):
     })
 
     # Calculate the percentage of data points in each bin
-    heatmap_data = df_binned.groupby(['P6', 'T10']).size().reset_index(name='count')
+    heatmap_data = df_binned.groupby(['P6', 'T10'], observed=True).size().reset_index(name='count')
     heatmap_data['percentage'] = 100 * heatmap_data['count'] / len(df)
-    heatmap_pivot = heatmap_data.pivot("P6", "T10", "percentage")
+    heatmap_pivot = heatmap_data.pivot(index="P6", columns="T10", values="percentage")
 
     # Plotting the heatmap
     plt.figure(figsize=(16, 8), dpi=300)

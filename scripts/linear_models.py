@@ -12,8 +12,8 @@ from sklearn.preprocessing import StandardScaler
 from skopt import BayesSearchCV
 from skopt.space import Real
 
+plt.style.use('fivethirtyeight')
 SAVE_FIG = True
-
 
 def BayesSearchCV_results(X_test, y_test, bs, filename):
     # Print the results
@@ -198,7 +198,6 @@ def plot_training_test(X_train, y_train, X_test, y_test):
 def plot_parity_residual(X_test, y_test, bs, filename, rng=[2, 6.5]):
     y_pred = bs.predict(X_test.drop("Time", axis=1)).squeeze()
     fig, axs = plt.subplots(2, 2, figsize=(8, 8), dpi=200)
-    plt.style.use('seaborn')
     
     # Scatter plot
     axs[0, 0].scatter(y_test, y_pred)

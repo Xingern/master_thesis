@@ -36,3 +36,26 @@ def lysekil():
         raw_df.to_pickle("../data/raw/cached_Lysekil.pkl")
         
     return raw_df
+
+def extended_lysekil():
+    headers = ['Time', 'Desorber-Sump-LT1017', 'Absorber-AE1062A_1', 
+               'Absorber-AE1062A_2', 'Absorber-AE1062B_1', 
+               'Absorber-AE1062B_2','Capture_rate']
+    
+    all_cols = list(range(10))
+    remove_cols = [0, 1, 2]
+    import_cols = [x for x in all_cols if x not in remove_cols]
+    skip = 3
+    
+    # Check if the pickled file exists and load it
+    if os.path.exists("../data/raw/cached_Extended_Lysekil.pkl"):
+        raw_df = pd.read_pickle("../data/raw/cached_Extended_Lysekil.pkl")
+    else:
+        raw_df = pd.read_excel("../data/raw/Extended_Lysekil_MEA_data_fixed.xlsx", 
+                            header=None, 
+                            names=headers, 
+                            usecols=import_cols, 
+                            skiprows=skip)
+        raw_df.to_pickle("../data/raw/cached_Extended_Lysekil.pkl")
+        
+    return raw_df

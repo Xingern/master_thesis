@@ -9,6 +9,13 @@ DROP_COLS = ["Desorber-Packing-TT1030A",
 STABLE = ["F1", "D1", "T2", "P6", "T7", "F8", "D8", "T9", "F10", "T10"]
 STD_LIMIT = [0.03, 10, 1, 0.03, 0.5, 0.03, 10, 0.5, 5, 0.5]
 
+STABLE = {'F1': 0.03, 'D1': 10, 'T2': 1, 'P6': 0.03, 'T7': 0.5, 'L7': 50, 
+          'F8': 0.03, 'D8': 10, 'T9': 0.5, 'F10': 5, 'T10': 0.5, 'B11': 0.2, 
+          'B12': 0.1, 'Cap': 1}
+
+STABILITY_LEN = len(STABLE)
+
+#### FORTSETT MED Å LAGE DETTE OM TIL EN DICT!!!!!!
 def initial_clean(raw_df, drop_cols=DROP_COLS):
     """
     The functions does some basic pre-processing of the imported data. 
@@ -21,8 +28,8 @@ def initial_clean(raw_df, drop_cols=DROP_COLS):
     """
     
     raw_df["Time"] = pd.to_datetime(raw_df["Time"]).dt.strftime('%Y-%m-%d %H:%M')
-    raw_df.iloc[:, 1:] = raw_df.iloc[:, 1:].applymap(convert_to_float_or_nan)
-    raw_df.iloc[:, 1:] = raw_df.iloc[:, 1:].astype('float32')
+    raw_df.iloc[:, 1:] = raw_df.iloc[:, 1:].map(convert_to_float_or_nan)
+    raw_df[raw_df.columns[1:]] = raw_df[raw_df.columns[1:]].astype('float32')
     drop_df = raw_df.drop(columns=drop_cols)
     df = drop_nan_neg(drop_df)
     return df.copy()
@@ -93,15 +100,23 @@ def correct_CO2_flow(df, table):
         df.at[index, "F10"] = x_CO2 * F
     return df
 
-def stability(df, start_date, end_date, stable=STABLE, std_limit=STD_LIMIT):
+def stability(df, start_date, end_date, stable=STABLE):
     """
     Calculate stability of a dataframe within a specified date range.
 
     Parameters
     ----------
-    df (pandas.DataFrame): The input dataframe.
-    start_date (str): The start date of the date range.
-    end_date (str): The end date of the date range.
+    df (pandas.DataFrame): 
+        The input dataframe.
+        
+    start_date (str): 
+        The start date of the date range.
+        
+    end_date (str): 
+        The end date of the date range.
+        
+     stable (dict): 
+        A dictionary with keys as column names and values as standard limits.
 
     Returns
     -------
@@ -111,9 +126,10 @@ def stability(df, start_date, end_date, stable=STABLE, std_limit=STD_LIMIT):
     """
     mask = (df["Time"] >= start_date) & (df["Time"] <= end_date)
     df_p = df.loc[mask]
-    std = df_p[stable].std()
-    df_stable = pd.DataFrame({'Actual deviation': np.round(std, 3),
-                                'Limits': std_limit,})
+    std = df_p[stable.keys()].std()
+    df_stable = pd.DataFrame({'Actual deviation': np.round(std, 3)})
+                              
+    df_stable['Limits'] = df_stable.index.map(stable)
 
     df_stable['Status'] = np.where(df_stable['Actual deviation'] 
                                    <= df_stable['Limits'], 
@@ -214,7 +230,7 @@ def time_frame_future_past(df, current_time, tol):
     else:
         return None
     
-def add_stability(df, tol, stable=STABLE, std_limit=STD_LIMIT):
+def add_stability(df, tol, stable=STABLE, method='hybrid'):
     """
     Processes the DataFrame to add a 'Status' column with 'Stable' or 'Unstable' 
     labels based on the stability of the variables. Also tracks the number of
@@ -224,6 +240,7 @@ def add_stability(df, tol, stable=STABLE, std_limit=STD_LIMIT):
     ----------
     df : pd.DataFrame
         The input Dataframe that contains the variables to be analyzed.
+        
     tol : int
         Number of minutes to look into the future and past.
         
@@ -238,26 +255,29 @@ def add_stability(df, tol, stable=STABLE, std_limit=STD_LIMIT):
     df["Status"] = None
     df['Time'] = pd.to_datetime(df['Time'])
     
-    unstable_counter, counter = {}, [0]*10
+    unstable_counter, counter = {}, [0]*STABILITY_LEN
     start_time, end_time = df['Time'].iloc[0], df['Time'].iloc[-1]
     mask = (df["Time"] >= start_time) & (df["Time"] <= end_time)
     
     for index, row in df[mask].iterrows():
         current_time = row['Time']
-        df_period = time_frame_future_past(df, current_time, tol)
+        
+        if method == 'hybrid':
+            df_period = time_frame_future_past(df, current_time, tol)
+        elif method == 'future':
+            df_period = time_frame_future(df, current_time, tol)
         
         if df_period is None:
             continue  
 
         df_stable, _ = stability(df, df_period["Time"].iloc[0], 
                                  df_period["Time"].iloc[-1],
-                                 stable=stable, 
-                                 std_limit=std_limit)
+                                 stable=stable)
         status_counts = df_stable['Status'].value_counts()
         
         if 'Stable' in status_counts:
             stable_count = status_counts['Stable'] 
-            if stable_count == 10:
+            if stable_count == STABILITY_LEN:
                 df.at[index, 'Status'] = "Stable"
             else:
                 df.at[index, 'Status'] = "Unstable"
