@@ -42,6 +42,8 @@ def save_file(obj, file_path, filename, file_type, overwrite=False):
             obj.write_image(file_path)
         elif file_type == "matplotlib":
             obj.savefig(file_path, format="pdf", bbox_inches='tight')
+        elif file_type == "matplotlib-png":
+            obj.savefig(file_path, format="png", bbox_inches='tight')
         elif file_type == "pandas":
             obj.to_pickle(file_path)
         else:
