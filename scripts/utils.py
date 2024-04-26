@@ -360,30 +360,30 @@ def plot_mse_over_epochs(history, plots_path, overwrite):
     save_file(plt.gcf(), plots_path, "Loss_over_epoch.pdf", 'matplotlib', overwrite)
     plt.show()
      
-def plot_time_predictions(df_train, df_test, plots_path, overwrite=False):
+def plot_time_predictions(df_train, df_test, plots_path, overwrite=False, limit=[3.5, 4.4]):
     fig, ax = plt.subplots(2, figsize=(16, 10))
 
+    # Training data
     sns.scatterplot(ax=ax[0], x=df_train['Time'], y=df_train['Actual'], label='Actual', alpha=0.9, s=20)
     sns.scatterplot(ax=ax[0], x=df_train['Time'], y=df_train['Predicted'], label='Predicted', alpha=0.9, s=20)
 
     ax[0].set_title('Training', fontsize=20)
-    ax[0].set_ylim(3.5, 4.5)
+    ax[0].set_ylim(limit[0], limit[1])
     ax[0].set_xlabel('Time', fontsize=15)
     ax[0].set_ylabel('SRD [ MJ/kg CO2]', fontsize=15)
-
     ax[0].xaxis.set_major_formatter(mdates.DateFormatter('%B %d'))
-    ax[0].legend(markerscale=1.5)
+    ax[0].legend(markerscale=1.5, loc='upper right', shadow=True, fancybox=True)
 
-
+    # Testing data
     sns.scatterplot(ax=ax[1], x=df_test['Time'], y=df_test['Actual'], label='Actual', alpha=0.9, s=50)
     sns.scatterplot(ax=ax[1], x=df_test['Time'], y=df_test['Predicted'], label='Predicted', alpha=0.9, s=50)
 
     ax[1].set_title('Testing', fontsize=20)
+    ax[1].set_ylim(limit[0], limit[1])
     ax[1].set_xlabel('Time', fontsize=15)
     ax[1].set_ylabel('SRD [ MJ/kg CO2]', fontsize=15)
-
     ax[1].xaxis.set_major_formatter(mdates.DateFormatter('%B %d %H:00'))
-    ax[1].legend(markerscale=1.5, loc='upper left', shadow=True, fancybox=True)
+    ax[1].legend(markerscale=1.5, loc='upper right', shadow=True, fancybox=True)
 
     plt.xticks(rotation=30, fontsize=15)
     plt.tight_layout()
