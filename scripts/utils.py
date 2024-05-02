@@ -197,7 +197,7 @@ def plot_parity(df_train, df_test, name, plots_path, overwrite, limit, error_lin
     plt.tick_params(left = False, right = False , labelleft = False , 
                 labelbottom = False, bottom = False) 
 
-    filename = "Parity_plot_" + name + ".pdf"
+    filename = name + "_parity_plot" + ".pdf"
     save_file(plt.gcf(), plots_path, filename, 'matplotlib', overwrite)
     plt.show()
 
@@ -232,7 +232,7 @@ def plot_residuals(df_train, df_test, name, plots_path, overwrite, limit, error_
     
     ax_main.set_xlim(limit)
     ax_main.set_ylim(res_limit[0], res_limit[1])
-    ax_main.set_xlabel('True values')
+    ax_main.set_xlabel('Specific reboiler duty [MJ/kg CO2]')
     ax_main.set_ylabel('Residuals')
     ax_main.legend(markerscale=1.5, loc='upper left', shadow=True, fancybox=True)
     
@@ -252,7 +252,7 @@ def plot_residuals(df_train, df_test, name, plots_path, overwrite, limit, error_
     plt.tick_params(left = False, right = False , labelleft = False , 
                 labelbottom = False, bottom = False) 
   
-    filename = "Residuals_plot_" + name + ".pdf"
+    filename = name + "_residuals_plot" + ".pdf"
     save_file(plt.gcf(), plots_path, filename, 'matplotlib', overwrite)
     plt.show()
 
@@ -289,7 +289,7 @@ def plot_residual_histogram(df_train, df_test, name, plots_path, overwrite, erro
     plt.ylabel('Residual')
     plt.legend(markerscale=1.5, loc='upper left', shadow=True, fancybox=True)
     
-    filename = "ResidualsHistogram_plot_" + name + ".pdf"
+    filename = name + "_residuals_histogram_plot" + ".pdf"
     save_file(plt.gcf(), plots_path, filename, 'matplotlib', overwrite)
     plt.show()
 
@@ -303,7 +303,7 @@ def plot_distribution(df_train, df_test, name, plots_path, overwrite, limit, gri
     sns.kdeplot(df_train['Actual'], linewidth=2, alpha=0.7, fill=True, ax=axs[0], label='Actual', gridsize=gridsize)
     sns.kdeplot(df_train['Predicted'], linewidth=2, alpha=0.7, fill=True, ax=axs[0], label='Predicted', gridsize=gridsize)
     axs[0].legend(markerscale=1.5, loc='upper left', shadow=True, fancybox=True)
-    axs[0].set_xlabel('True values')
+    axs[0].set_xlabel('Specific reboiler duty [MJ/kg CO2]')
     axs[0].set_xlim(limit[0], limit[1])
     axs[0].set_title('Training')
 
@@ -311,14 +311,14 @@ def plot_distribution(df_train, df_test, name, plots_path, overwrite, limit, gri
     sns.kdeplot(df_test['Predicted'], linewidth=2, alpha=0.7, fill=True, ax=axs[1], label='Predicted', gridsize=gridsize)
     axs[1].legend(markerscale=1.5, loc='upper left', shadow=True, fancybox=True)
     axs[1].set_xlim(limit[0], limit[1])
-    axs[1].set_xlabel('True values')
+    axs[1].set_xlabel('Specific reboiler duty [MJ/kg CO2]')
     axs[1].set_title('Testing')
 
-    filename = "KDE_plot_" + name + ".pdf"
+    filename = name + "_KDE_plot" + ".pdf"
     save_file(plt.gcf(), plots_path, filename, 'matplotlib', overwrite)
     plt.show()
 
-def plot_hisograms(df):
+def plot_histograms(df):
     """
     Function to generate histograms for the actual values and residuals using
     Freedman-Diaconis rule for bin width.
@@ -360,12 +360,14 @@ def plot_mse_over_epochs(history, plots_path, overwrite):
     save_file(plt.gcf(), plots_path, "Loss_over_epoch.pdf", 'matplotlib', overwrite)
     plt.show()
      
-def plot_time_predictions(df_train, df_test, plots_path, overwrite=False, limit=[3.5, 4.4]):
+def plot_time_predictions(df_train, df_test, plots_path, overwrite=False, limit=[3.5, 4.4], linewidth=1):
     fig, ax = plt.subplots(2, figsize=(16, 10))
 
     # Training data
-    sns.scatterplot(ax=ax[0], x=df_train['Time'], y=df_train['Actual'], label='Actual', alpha=0.9, s=20)
-    sns.scatterplot(ax=ax[0], x=df_train['Time'], y=df_train['Predicted'], label='Predicted', alpha=0.9, s=20)
+    sns.scatterplot(ax=ax[0], x=df_train['Time'], y=df_train['Actual'], 
+                    label='Actual', alpha=0.9, s=10, linewidth=linewidth)
+    sns.scatterplot(ax=ax[0], x=df_train['Time'], y=df_train['Predicted'], 
+                    label='Predicted', alpha=0.9, s=20, linewidth=linewidth)
 
     ax[0].set_title('Training', fontsize=20)
     ax[0].set_ylim(limit[0], limit[1])
@@ -375,8 +377,10 @@ def plot_time_predictions(df_train, df_test, plots_path, overwrite=False, limit=
     ax[0].legend(markerscale=1.5, loc='upper right', shadow=True, fancybox=True)
 
     # Testing data
-    sns.scatterplot(ax=ax[1], x=df_test['Time'], y=df_test['Actual'], label='Actual', alpha=0.9, s=50)
-    sns.scatterplot(ax=ax[1], x=df_test['Time'], y=df_test['Predicted'], label='Predicted', alpha=0.9, s=50)
+    sns.scatterplot(ax=ax[1], x=df_test['Time'], y=df_test['Actual'], 
+                    label='Actual', alpha=0.9, s=20, linewidth=linewidth)
+    sns.scatterplot(ax=ax[1], x=df_test['Time'], y=df_test['Predicted'], 
+                    label='Predicted', alpha=0.9, s=20, linewidth=linewidth)
 
     ax[1].set_title('Testing', fontsize=20)
     ax[1].set_ylim(limit[0], limit[1])
@@ -390,21 +394,32 @@ def plot_time_predictions(df_train, df_test, plots_path, overwrite=False, limit=
     save_file(plt.gcf(), plots_path, "Predictions.pdf", 'matplotlib', overwrite)
     plt.show()
     
-def generate_prediction_df(model, scaler, X, y):
+def generate_prediction_df(model, scaler, X, y, time=None):
     """
     Calculate the predictions for the model and inverse transform the data. Returns
     a DataFrame with the actual and predicted values in the original scale.
     """
-    y_pred = model.predict(X.drop('Time', axis=1))
-    y_pred = scaler.inverse_transform(y_pred)
+    X_copy, y_copy = X.copy(), y.copy()
     
-    y_inv = y.copy()
-    y_inv['SRD'] = scaler.inverse_transform(y['SRD'].to_numpy().reshape(-1, 1))
+    if 'Time' not in X_copy.columns:
+        X_copy['Time'] = time
+        
+    if 'Time' not in y_copy.columns:
+        y_copy['Time'] = time   
+        
+    y_pred = model.predict(X_copy.drop('Time', axis=1))
+    
+    try:
+        y_pred = scaler.inverse_transform(y_pred)
+    except:
+        y_pred = scaler.inverse_transform(y_pred.reshape(-1, 1))
+    
+    y_inv = scaler.inverse_transform(y_copy['SRD'].to_numpy().reshape(-1, 1))
 
-    df_res = pd.DataFrame({'Time': y_inv['Time'], 
-                           'Actual': y_inv['SRD'], 
+    df_res = pd.DataFrame({'Time': y_copy['Time'], 
+                           'Actual': y_inv.flatten(), 
                            'Predicted': y_pred.flatten()})
-    df_res.sort_values('Time')
+    df_res.sort_values('Time', inplace=True)
     
     rmse = mean_squared_error(df_res['Actual'], df_res['Predicted'], squared=False)
     r2 = r2_score(df_res['Actual'], df_res['Predicted'])
