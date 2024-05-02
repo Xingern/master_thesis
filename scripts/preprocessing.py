@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 
@@ -15,7 +16,74 @@ STABLE = {'F1': 0.03, 'D1': 10, 'T2': 1, 'P6': 0.03, 'T7': 0.5, 'L7': 50,
 
 STABILITY_LEN = len(STABLE)
 
-#### FORTSETT MED Å LAGE DETTE OM TIL EN DICT!!!!!!
+def lysekil(data_path):
+    headers = ["Time", "Downstream-Rich-FT1042", "Downstream-Rich-AT1060", 
+            "Downstream-Rich-TT1043", "Upstream-Rich-TT1027", 
+            "Upstream-Rich-PST1025", "Desorber-Overhead-FT1067", 
+            "Desorber-Overhead-PIC1032", "Desorber-Overhead-TIC1062", 
+            "Desorber-Overhead-Corrected", "Desorber-Packing-PT1004", 
+            "Desorber-Packing-TT1004", "Desorber-Packing-PT1005", 
+            "Desorber-Packing-TT1005", "Desorber-Packing-TT1030A", 
+            "Desorber-Packing-TT1030B", "Desorber-Packing-TT1030C", 
+            "Desorber-Packing-PT1035", "Desorber-Sump-TT1029", 
+            "Desorber-Sump-UX1029", "Desorber-Sump-TIC1029", 
+            "Desorber-Sump-Corrected", "Upstream-Lean-TT1053", 
+            "Downstream-Lean-FT1076", "Downstream-Lean-AT1058", 
+            "Downstream-Lean-PT1010", "Downstream-Lean-TT1054"]
+
+    # Keep the indices of columns with actual values
+    all_cols = list(range(36))
+    remove_cols = [0, 1, 3, 7, 10, 15, 24, 29, 31]
+    import_cols = [x for x in all_cols if x not in remove_cols]
+
+    # Rows to skip due to formating
+    skip = 3
+
+    data_file_path = os.path.join(data_path, "Lysekil_MEA_data_unprotected.xlsx")
+    cache_file_path = os.path.join(data_path, "cached_Lysekil.pkl")
+
+    # Check if the pickled file exists and load it
+    if os.path.exists(cache_file_path):
+        raw_df = pd.read_pickle(cache_file_path)
+    else:
+        raw_df = pd.read_excel(data_file_path, 
+                               header=None, 
+                               names=headers, 
+                               usecols=import_cols, 
+                               skiprows=skip)
+        raw_df.to_pickle(cache_file_path)
+        
+    return raw_df
+
+def extended_lysekil(data_path):
+    headers = ['Time', 'Desorber-Sump-LT1017', 'Absorber-AE1062A_1', 
+               'Absorber-AE1062A_2', 'Absorber-AE1062B_1', 
+               'Absorber-AE1062B_2','Capture_rate']
+    
+    all_cols = list(range(10))
+    remove_cols = [0, 1, 2]
+    import_cols = [x for x in all_cols if x not in remove_cols]
+    
+    # Rows to skip due to formating
+    skip = 3
+    
+    # Paths to data file and cache
+    data_file_path = os.path.join(data_path, "Extended_Lysekil_MEA_data_fixed.xlsx")
+    cache_file_path = os.path.join(data_path, "cached_Extended_Lysekil.pkl")
+
+    # Check if the pickled file exists and load it
+    if os.path.exists(cache_file_path):
+        raw_df = pd.read_pickle(cache_file_path)
+    else:
+        raw_df = pd.read_excel(data_file_path, 
+                               header=None, 
+                               names=headers, 
+                               usecols=import_cols, 
+                               skiprows=skip)
+        raw_df.to_pickle(cache_file_path)
+        
+    return raw_df
+
 def initial_clean(raw_df, drop_cols=DROP_COLS):
     """
     The functions does some basic pre-processing of the imported data. 
