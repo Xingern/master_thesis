@@ -1,5 +1,5 @@
 .DS_Store
 data/
-figs/
-scripts/__pycache__/
 models/
+figs/
+scripts/__pycache__
