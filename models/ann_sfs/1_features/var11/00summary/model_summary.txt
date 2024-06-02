@@ -1,0 +1,32 @@
+Training error: 0.09327167580648894
+        Test error: 0.08336457620878962
+        Parameters: ['F8']
+        Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 17)                34        
+                                                                 
+ dense_1 (Dense)             (None, 26)                468       
+                                                                 
+ dense_2 (Dense)             (None, 19)                513       
+                                                                 
+ dense_3 (Dense)             (None, 1)                 20        
+                                                                 
+=================================================================
+Total params: 1,035
+Trainable params: 1,035
+Non-trainable params: 0
+_________________________________________________________________
+learning_rate: 0.01
+num_layers: 3
+optimizer: adam
+batch_size: 128
+units_0: 17
+units_1: 26
+units_2: 19
+tuner/epochs: 400
+tuner/initial_epoch: 134
+tuner/bracket: 5
+tuner/round: 5
+tuner/trial_id: 0422
