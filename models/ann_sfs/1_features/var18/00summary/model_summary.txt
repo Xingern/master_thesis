@@ -1,0 +1,32 @@
+Training error: 0.11501673058994503
+        Test error: 0.11262860924649364
+        Parameters: ['B12']
+        Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 23)                46        
+                                                                 
+ dense_1 (Dense)             (None, 28)                672       
+                                                                 
+ dense_2 (Dense)             (None, 21)                609       
+                                                                 
+ dense_3 (Dense)             (None, 1)                 22        
+                                                                 
+=================================================================
+Total params: 1,349
+Trainable params: 1,349
+Non-trainable params: 0
+_________________________________________________________________
+learning_rate: 0.01
+num_layers: 3
+optimizer: adam
+units_0: 23
+units_1: 28
+batch_size: 128
+units_2: 21
+tuner/epochs: 400
+tuner/initial_epoch: 134
+tuner/bracket: 3
+tuner/round: 3
+tuner/trial_id: 0664
