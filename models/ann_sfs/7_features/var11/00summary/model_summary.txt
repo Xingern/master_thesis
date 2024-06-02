@@ -1,0 +1,36 @@
+Training error: 0.052380490638329745
+        R2 score: 0.8074086452131294
+        -------------------------------------
+        Test error: 0.04069057003953467
+        R2 score: 0.8723154208298486
+        -------------------------------------
+        Parameters: ['T2', 'D8', 'B12', 'T3', 'T10', 'D1', 'F8']
+        Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 40)                320       
+                                                                 
+ dense_1 (Dense)             (None, 35)                1435      
+                                                                 
+ dense_2 (Dense)             (None, 10)                360       
+                                                                 
+ dense_3 (Dense)             (None, 1)                 11        
+                                                                 
+=================================================================
+Total params: 2,126
+Trainable params: 2,126
+Non-trainable params: 0
+_________________________________________________________________
+learning_rate: 0.01
+num_layers: 3
+optimizer: rmsprop
+batch_size: 128
+units_0: 40
+units_1: 35
+units_2: 10
+tuner/epochs: 200
+tuner/initial_epoch: 67
+tuner/bracket: 1
+tuner/round: 1
+tuner/trial_id: 0240
