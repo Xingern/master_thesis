@@ -1,5 +1,5 @@
-# Master thesis
-Repo for both the master thesis and the autumn project.
+# Specialization project
+Branch for the autumn project. Note that this branch is only used as an archive, the updated preprocessing exists in the main branch.
 
 Written by *Jun Xing Li*
 
