@@ -1,0 +1,310 @@
+CASE 1 
+=================================================================
+=================================================================
+
+tune_hypermodel V2
+------------------
+Den opprinnelige modellen som er trent på data fra ACC. Baserer seg på alle
+kolonnene og kjøretid på 2 timer. Her har T5 ikke blitt fjernet. Basert på 71%
+stationary.
+RMSE train = 0.040
+RMSE test = 0.032
+
+tune_hypermodel V3
+------------------
+Ny modell som bruker den nye dataen fra ACC. T5 har blitt fjernet og kun 55%
+regnes som stabilt.
+RMSE train = 0.025
+RMSE test = 0.036
+
+tune_hypermodel V4
+------------------
+Brukte feil datasett inn i V3 og lagde V4. Funker fett. Med EarlyStopping men
+ikke ReduceLROnPlateau
+
+299/299 [==============================] - 0s 407us/step
+Root Mean Squared Error: 0.029100345919310287
+R2 Score: 0.9412067006360677
+75/75 [==============================] - 0s 448us/step
+Root Mean Squared Error: 0.03792731889613392
+R2 Score: 0.8834473185130834
+
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 125)               2500      
+                                                                 
+ dense_1 (Dense)             (None, 125)               15750     
+                                                                 
+ dense_2 (Dense)             (None, 125)               15750     
+                                                                 
+ dense_3 (Dense)             (None, 1)                 126       
+                                                                 
+=================================================================
+Total params: 34,126
+Trainable params: 34,126
+Non-trainable params: 0
+_________________________________________________________________
+{'num_nodes': 125, 'num_layers': 3, 'activation': 'relu', 
+'learning_rate': 0.001, 'optimizer': 'rmsprop', 'batch_size': 32, 
+'tuner/epochs': 334, 'tuner/initial_epoch': 112, 'tuner/bracket': 5, 
+'tuner/round': 4, 'tuner/trial_id': '1683'}
+
+
+
+
+tune_hypermodel-V5 (BEST CASE 1)
+------------------
+Fiksa opp i feilen med parametre
+
+299/299 [==============================] - 0s 363us/step
+Root Mean Squared Error: 0.04336625605676838
+R2 Score: 0.8682273216065479
+75/75 [==============================] - 0s 363us/step
+Root Mean Squared Error: 0.026070637757005313
+R2 Score: 0.9471797922992431
+
+Epoch: 60
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 140)               2800      
+                                                                 
+ dense_1 (Dense)             (None, 65)                9165      
+                                                                 
+ dense_2 (Dense)             (None, 130)               8580      
+                                                                 
+ dense_3 (Dense)             (None, 1)                 131       
+                                                                 
+=================================================================
+Total params: 20,676
+Trainable params: 20,676
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 3, 'learning_rate': 0.001, 'optimizer': 'rmsprop', 
+'num_nodes_0': 140, 'activation': 'tanh', 
+'dropout-normalization': False, 'num_nodes_1': 65, 
+'num_nodes_2': 130, 'batch_size': 32, 'num_nodes_3': 90, 'num_nodes_4': 135, 
+'tuner/epochs': 112, 'tuner/initial_epoch': 38, 'tuner/bracket': 3, 
+'tuner/round': 1, 'tuner/trial_id': '1868'}
+-------------------------------------
+
+=================================================================
+=================================================================
+
+
+
+
+
+
+CASE 2
+=================================================================
+=================================================================
+
+whole_data_shuffled_V3 (Best Case 2)
+------------------
+541/541 [==============================] - 0s 325us/step
+Root Mean Squared Error: 0.1400470733726574
+R2 Score: 0.9395801953383076
+136/136 [==============================] - 0s 318us/step
+Root Mean Squared Error: 0.18445642280835153
+R2 Score: 0.9553217143975529
+
+
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 75)                1500      
+                                                                 
+ dense_1 (Dense)             (None, 75)                5700      
+                                                                 
+ dense_2 (Dense)             (None, 75)                5700      
+                                                                 
+ dense_3 (Dense)             (None, 75)                5700      
+                                                                 
+ dense_4 (Dense)             (None, 1)                 76        
+                                                                 
+=================================================================
+Total params: 18,676
+Trainable params: 18,676
+Non-trainable params: 0
+_________________________________________________________________
+{'num_nodes': 75, 'num_layers': 4, 'dropout': False, 'activation': 'sigmoid', 
+'learning_rate': 0.01, 'optimizer': 'rmsprop', 'batch_size': 64, 
+'tuner/epochs': 1000, 'tuner/initial_epoch': 334, 'tuner/bracket': 4, 
+'tuner/round': 4, 'tuner/trial_id': '1823', 'num_nodes_0': 75, 
+'dropout-normalization': False, 'num_nodes_1': 75, 'num_nodes_2': 75, 
+'num_nodes_3': 75}
+
+
+
+
+
+=================================================================
+=================================================================
+
+
+
+
+
+
+
+CASE 3
+=================================================================
+=================================================================
+
+stationary-whole-V1
+------------------
+Bruker 2020-06-15 00:00 etterpå som testing, tilsvarer 20% av dataen. Prøver
+å kjøre samme search som beste for case 1.
+
+299/299 [==============================] - 0s 334us/step
+Root Mean Squared Error: 0.013979462934906779
+R2 Score: 0.9862474819091723
+75/75 [==============================] - 0s 336us/step
+Root Mean Squared Error: 0.06185362880836924
+R2 Score: 0.7072372046690357
+
+MISTENKER AT DET HER ER FEIL FORDI JEG GLEMTE Å KOMMENTERE UT EN LINJE
+
+
+stationary-whole-V2
+------------------
+La til dropout og normalization som hyperparameter og la til ReduceLROnPlateau
+
+313/313 [==============================] - 0s 337us/step
+Root Mean Squared Error: 0.03480515593979188
+R2 Score: 0.9243064392330473
+61/61 [==============================] - 0s 341us/step
+Root Mean Squared Error: 0.06542541953381106
+R2 Score: -0.21354206875098036
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 95)                1900      
+                                                                 
+ dense_1 (Dense)             (None, 95)                9120      
+                                                                 
+ dense_2 (Dense)             (None, 95)                9120      
+                                                                 
+ dense_3 (Dense)             (None, 1)                 96        
+                                                                 
+=================================================================
+Total params: 20,236
+Trainable params: 20,236
+Non-trainable params: 0
+_________________________________________________________________
+{'num_nodes': 95, 'num_layers': 3, 'dropout-normal': False, 
+'activation': 'tanh', 'learning_rate': 0.001, 'optimizer': 'rmsprop', 
+'batch_size': 32, 'tuner/epochs': 38, 'tuner/initial_epoch': 13, 
+'tuner/bracket': 5, 'tuner/round': 2, 'tuner/trial_id': '1515'}
+-------------------------------------
+
+
+
+stationary-whole-V3 
+------------------
+Oppdaget feilen med at antall nodes settes globalt og nå lar vi alt variere.
+
+299/299 [==============================] - 0s 550us/step
+Root Mean Squared Error: 0.08443974635333329
+R2 Score: 0.504977009228725
+75/75 [==============================] - 0s 553us/step
+Root Mean Squared Error: 0.07612034236108399
+R2 Score: 0.53051745632882
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 120)               2400      
+                                                                 
+ dense_1 (Dense)             (None, 105)               12705     
+                                                                 
+ dense_2 (Dense)             (None, 80)                8480      
+                                                                 
+ dense_3 (Dense)             (None, 120)               9720      
+                                                                 
+ dense_4 (Dense)             (None, 85)                10285     
+                                                                 
+ dense_5 (Dense)             (None, 1)                 86        
+                                                                 
+=================================================================
+Total params: 43,676
+Trainable params: 43,676
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 5, 'learning_rate': 0.001, 'optimizer': 'rmsprop', 
+'num_nodes_0': 120, 'activation': 'tanh', 'dropout-normalization': False, 
+'num_nodes_1': 105, 'num_nodes_2': 80, 'num_nodes_3': 120, 'num_nodes_4': 85, 
+'batch_size': 128, 'tuner/epochs': 2000, 'tuner/initial_epoch': 0, 
+'tuner/bracket': 0, 'tuner/round': 0}
+-------------------------------------
+
+
+
+stationary-time-series-V1 (BEST CASE 3)
+------------------
+Faktisk implementerer modellen som en time series ved å predikere fremtiden
+og bruke 20 x 15 som input. 
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 15, 25)            525       
+                                                                 
+ dense_1 (Dense)             (None, 15, 50)            1300      
+                                                                 
+ dense_2 (Dense)             (None, 15, 1)             51        
+                                                                 
+=================================================================
+Total params: 1,876
+Trainable params: 1,876
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 2, 'learning_rate': 0.001, 'optimizer': 'adam', 
+'num_nodes_0': 25, 'activation': 'tanh', 'dropout-normalization': False, 
+'num_nodes_1': 50, 'batch_size': 32, 'num_nodes_2': 25, 'tuner/epochs': 3, 
+'tuner/initial_epoch': 0, 'tuner/bracket': 4, 'tuner/round': 0}
+
+
+313/313 [==============================] - 0s 394us/step
+Root Mean Squared Error: 0.06251192635336579
+R2 Score: 0.7561667808280328
+61/61 [==============================] - 0s 438us/step
+Root Mean Squared Error: 0.06268203711955667
+R2 Score: -0.22432100465729876
+
+=================================================================
+=================================================================
+
+
+
+
+
+
+
+
+
+
+
+CASE 4
+=================================================================
+=================================================================
+
+
+transient-time-series-V1
+------------------
+Based on similar apporach from case 3, just with the whole dataset.
+
+
+
+
+
