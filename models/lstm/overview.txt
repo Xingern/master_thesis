@@ -1,0 +1,221 @@
+CASE 3 (Stationary time series)
+=================================================================
+=================================================================
+
+stationary-V1
+------------------
+First try. Denne her er veldig bra. 10 time steps
+
+299/299 [==============================] - 1s 2ms/step
+Root Mean Squared Error: 0.013534473967489833
+R2 Score: 0.9872858605801103
+75/75 [==============================] - 0s 2ms/step
+Root Mean Squared Error: 0.13645969690460355
+R2 Score: -0.5052971076178565
+
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ lstm (LSTM)                 (None, 10, 70)            25200     
+                                                                 
+ lstm_1 (LSTM)               (None, 10, 60)            31440     
+                                                                 
+ lstm_2 (LSTM)               (None, 60)                29040     
+                                                                 
+ dense (Dense)               (None, 1)                 61        
+                                                                 
+=================================================================
+Total params: 85,741
+Trainable params: 85,741
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 3, 'learning_rate': 0.001, 'optimizer': 'adam', 
+'num_units_0': 70, 'dropout_rate_0': 0.35000000000000003, 
+'batch_size': 128, 'num_units_1': 60, 'dropout_rate_1': 0.4, 
+'num_units_2': 60, 'dropout_rate_2': 0.30000000000000004, 
+'tuner/epochs': 10, 'tuner/initial_epoch': 0, 'tuner/bracket': 0, 
+'tuner/round': 0}
+-------------------------------------
+
+
+
+stationary-V2
+------------------
+Fjernet droput og tonet ned på parametere.
+
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ lstm (LSTM)                 (None, 10, 30)            6000      
+                                                                 
+ lstm_1 (LSTM)               (None, 10, 50)            16200     
+                                                                 
+ lstm_2 (LSTM)               (None, 25)                7600      
+                                                                 
+ dense (Dense)               (None, 1)                 26        
+                                                                 
+=================================================================
+Total params: 29,826
+Trainable params: 29,826
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 3, 'learning_rate': 0.01, 'optimizer': 'rmsprop', 
+'num_units_0': 30, 'num_units_1': 50, 'batch_size': 32, 'num_units_2': 25, 
+'tuner/epochs': 4, 'tuner/initial_epoch': 2, 'tuner/bracket': 4, 
+'tuner/round': 1, 'tuner/trial_id': '0061'}
+-------------------------------------
+
+
+stationary-V3
+------------------
+Snakket med Vinicius og splittet dataen slik at tar med X og y fram til et punkt
+og deretter beregne y i neste.
+
+313/313 [==============================] - 1s 2ms/step
+Root Mean Squared Error: 0.04830402395516508
+R2 Score: 0.854409267839559
+61/61 [==============================] - 0s 2ms/step
+Root Mean Squared Error: 0.04692822372573862
+R2 Score: 0.3137579471911718
+
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ lstm (LSTM)                 (None, 15, 35)            7840      
+                                                                 
+ lstm_1 (LSTM)               (None, 80)                37120     
+                                                                 
+ dense (Dense)               (None, 1)                 81        
+                                                                 
+=================================================================
+Total params: 45,041
+Trainable params: 45,041
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 2, 'learning_rate': 0.1, 'optimizer': 'adam', 
+'activation': 'sigmoid', 'num_units_0': 35, 'dropout_rate_0': 0.0, 
+'num_units_1': 80, 'dropout_rate_1': 0.0, 'num_units_2': 30, 
+'dropout_rate_2': 0.30000000000000004, 'batch_size': 64, 
+'num_units_3': 45, 'dropout_rate_3': 0.1, 'tuner/epochs': 3, 
+'tuner/initial_epoch': 0, 'tuner/bracket': 4, 'tuner/round': 0}
+-------------------------------------
+
+Greia er at modellen fortsatt er litt dårlig, men i det minste ikke veeeldig 
+dårlig lengre. Trener også på få epochs. Vi prøver på å 
+
+
+stationary-V4 (best case 3)
+------------------
+Endrer litt på config. 1 til 3 layer og litt flere noder å søke gjennom.
+
+313/313 [==============================] - 0s 739us/step
+Root Mean Squared Error: 0.04604688268329526
+R2 Score: 0.8676976444350915
+61/61 [==============================] - 0s 772us/step
+Root Mean Squared Error: 0.03556691497860219
+R2 Score: 0.6058137334732503
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ lstm (LSTM)                 (None, 30)                6120      
+                                                                 
+ dense (Dense)               (None, 1)                 31        
+                                                                 
+=================================================================
+Total params: 6,151
+Trainable params: 6,151
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 1, 'learning_rate': 0.01, 'optimizer': 'adam', 
+'activation': 'tanh', 'num_units_0': 30, 'dropout_rate_0': 0.0, 
+'num_units_1': 65, 'dropout_rate_1': 0.1, 'batch_size': 64, 
+'num_units_2': 45, 'dropout_rate_2': 0.4, 'tuner/epochs': 3, 
+'tuner/initial_epoch': 0, 'tuner/bracket': 4, 'tuner/round': 0}
+-------------------------------------
+
+
+CASE 4 (Whole time series)
+=================================================================
+=================================================================
+
+whole-V1
+------------------
+Modellen sugde ganske kraftig denne gangen med en layer, R2=-1.2 uansett hvor
+lenge jeg trener modellen. Tester derfor ut et nytt arkitektur med flere layers.
+
+
+
+
+whole-V2
+------------------
+
+588/588 [==============================] - 3s 4ms/step
+Root Mean Squared Error: 0.5169007230851956
+R2 Score: 0.4149039381486177
+88/88 [==============================] - 0s 4ms/step
+Root Mean Squared Error: 0.282123866574121
+R2 Score: -0.008916899189413963
+
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ lstm (LSTM)                 (None, 15, 160)           115840    
+                                                                 
+ dropout (Dropout)           (None, 15, 160)           0         
+                                                                 
+ lstm_1 (LSTM)               (None, 50)                42200     
+                                                                 
+ dense (Dense)               (None, 1)                 51        
+                                                                 
+=================================================================
+Total params: 158,091
+Trainable params: 158,091
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 2, 'learning_rate': 0.001, 'optimizer': 'adam', 
+'activation': 'relu', 'num_units_0': 160, 'dropout_rate_0': 0.4, 
+'num_units_1': 50, 'dropout_rate_1': 0.0, 'num_units_2': 70, 
+'dropout_rate_2': 0.0, 'batch_size': 128, 'num_units_3': 160, 
+'dropout_rate_3': 0.2, 'tuner/epochs': 200, 'tuner/initial_epoch': 67, 
+'tuner/bracket': 1, 'tuner/round': 1, 'tuner/trial_id': '0205'}
+-------------------------------------
+
+
+whole-V3
+------------------
+Prøve å få den til å suge litt mindre, gjerne en positiv R2
+
+588/588 [==============================] - 3s 5ms/step
+Root Mean Squared Error: 0.43781715629050694
+R2 Score: 0.5802425168132586
+88/88 [==============================] - 0s 5ms/step
+Root Mean Squared Error: 0.2800986604822903
+R2 Score: 0.005515987756277485
+
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ lstm (LSTM)                 (None, 15, 160)           115840    
+                                                                 
+ lstm_1 (LSTM)               (None, 120)               134880    
+                                                                 
+ dropout (Dropout)           (None, 120)               0         
+                                                                 
+ dense (Dense)               (None, 1)                 121       
+                                                                 
+=================================================================
+Total params: 250,841
+Trainable params: 250,841
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 2, 'learning_rate': 0.001, 'optimizer': 'adam', 
+'activation': 'sigmoid', 'num_units_0': 160, 'dropout_rate_0': 0.0, 
+'num_units_1': 120, 'dropout_rate_1': 0.4, 'batch_size': 128, 
+'num_units_2': 120, 'dropout_rate_2': 0.2, 'tuner/epochs': 12, 
+'tuner/initial_epoch': 4, 'tuner/bracket': 3, 'tuner/round': 1, 
+'tuner/trial_id': '0164'}
+-------------------------------------
