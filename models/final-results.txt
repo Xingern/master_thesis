@@ -1,0 +1,390 @@
+===========================================
+    CASE 1 STEADY STATE INTERPOLATION
+===========================================
+
+---------------------------------------------------
+LINEAR REGRESSION WITH SEQUENTIAL FEATURE SELECTION
+---------------------------------------------------
+Root Mean Squared Error: 0.07493922194445343
+R2 Score: 0.6055833139294348
+Root Mean Squared Error: 0.06479764098901
+R2 Score: 0.6770681197060601
+10 out of 19 variables were selected during SFS
+Best variables: ('D1', 'T1', 'T3', 'T4', 'P6', 'T7', 'T9', 
+'T10', 'A11', 'Cap')
+Best hyperparameters: OrderedDict([('sfs__floating', True)])
+
+
+---------------------------------------------------
+ELASTIC NET REGRESSION
+---------------------------------------------------
+Root Mean Squared Error: 0.07466623607364632
+R2 Score: 0.6084516136317195
+Root Mean Squared Error: 0.06472163744254639
+R2 Score: 0.6778252328827343
+Best hyperparameters: OrderedDict([('elastic_net__alpha', 0.01), 
+('elastic_net__l1_ratio', 0.01)])
+Best L1: 0.0001
+Best L2: 0.0099
+
+
+---------------------------------------------------
+RANDOM FOREST REGRESSION
+---------------------------------------------------
+Root Mean Squared Error: 0.03885687251637148
+R2 Score: 0.8939592952701618
+Root Mean Squared Error: 0.03578512152992558
+R2 Score: 0.901508778513219
+Best hyperparameters: 
+OrderedDict([('random_forest__max_depth', 17), 
+('random_forest__max_features', 0.894983749642776), 
+('random_forest__min_samples_leaf', 4),
+ ('random_forest__min_samples_split', 10),
+  ('random_forest__n_estimators', 433)])
+
+
+---------------------------------------------------
+ARTIFICIAL NEURAL NETWORK 19 (tune_hypermodel-V5)
+---------------------------------------------------
+299/299 [==============================] - 0s 363us/step
+Root Mean Squared Error: 0.04336625605676838
+R2 Score: 0.8682273216065479
+75/75 [==============================] - 0s 363us/step
+Root Mean Squared Error: 0.026070637757005313
+R2 Score: 0.9471797922992431
+
+Epoch: 60
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 140)               2800      
+                                                                 
+ dense_1 (Dense)             (None, 65)                9165      
+                                                                 
+ dense_2 (Dense)             (None, 130)               8580      
+                                                                 
+ dense_3 (Dense)             (None, 1)                 131       
+                                                                 
+=================================================================
+Total params: 20,676
+Trainable params: 20,676
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 3, 'learning_rate': 0.001, 'optimizer': 'rmsprop', 
+'num_nodes_0': 140, 'activation': 'tanh', 
+'dropout-normalization': False, 'num_nodes_1': 65, 
+'num_nodes_2': 130, 'batch_size': 32, 'num_nodes_3': 90, 
+'num_nodes_4': 135, 
+'tuner/epochs': 112, 'tuner/initial_epoch': 38, 
+'tuner/bracket': 3, 
+'tuner/round': 1, 'tuner/trial_id': '1868'}
+-------------------------------------
+
+
+---------------------------------------------------
+ARTIFICIAL NEURAL NETWORK 7 (7_features var1)
+---------------------------------------------------
+7 (F1)
+Training error: 0.051475255847327546
+R2 score: 0.8160378158200017
+Test error: 0.03949772763015762
+R2 score: 0.8735955962440936
+
+Parameters: ['T2', 'D8', 'B12', 'T3', 'T10', 'D1', 'F1']
+        Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 50)                400       
+                                                                 
+ dense_1 (Dense)             (None, 25)                1275      
+                                                                 
+ dense_2 (Dense)             (None, 5)                 130       
+                                                                 
+ dense_3 (Dense)             (None, 1)                 6         
+                                                                 
+=================================================================
+Total params: 1,811
+Trainable params: 1,811
+Non-trainable params: 0
+_________________________________________________________________
+learning_rate: 0.01
+num_layers: 3
+optimizer: adam
+batch_size: 128
+units_0: 50
+units_1: 25
+units_2: 5
+tuner/epochs: 200
+tuner/initial_epoch: 67
+tuner/bracket: 4
+tuner/round: 4
+tuner/trial_id: 0143
+
+
+
+
+
+===========================================
+    CASE 2 COMPLETE DATA INTERPOLATION
+===========================================
+
+---------------------------------------------------
+LINEAR REGRESSION WITH SEQUENTIAL FEATURE SELECTION
+---------------------------------------------------
+Root Mean Squared Error: 0.5048764037569584
+R2 Score: 0.45097582038598516
+Root Mean Squared Error: 0.31795717541938334
+R2 Score: 0.5017432782881399
+13 out of 19 variables were selected during SFS
+Best variables: ('D1', 'P2', 'T2', 'T4', 'P6', 'T7', 'F8', 
+'T9', 'T10', 'A11', 'B11', 'B12', 'Cap')
+
+
+---------------------------------------------------
+ELASTIC NET REGRESSION
+---------------------------------------------------
+Root Mean Squared Error: 0.5026737238318054
+R2 Score: 0.45575594678191933
+Root Mean Squared Error: 0.3061282292210511
+R2 Score: 0.538126905074608
+Best hyperparameters: OrderedDict([('elastic_net__alpha', 
+0.0122890372251759), ('elastic_net__l1_ratio', 0.01)])
+Best L1: 0.000122890372251759
+Best L2: 0.01216614685292414
+
+
+---------------------------------------------------
+RANDOM FOREST REGRESSION
+---------------------------------------------------
+Root Mean Squared Error: 0.2814795101132453
+R2 Score: 0.8293466188726958
+Root Mean Squared Error: 0.16061441782053065
+R2 Score: 0.8728591936617036
+Best hyperparameters: 
+OrderedDict([('random_forest__max_depth', 17), 
+('random_forest__max_features', 0.894983749642776),
+('random_forest__min_samples_leaf', 4),
+('random_forest__min_samples_split', 10), 
+('random_forest__n_estimators', 433)])
+
+
+---------------------------------------------------
+ARTIFICIAL NEURAL NETWORK 19 (whole_data_shuffled_V3)
+---------------------------------------------------
+541/541 [==============================] - 0s 325us/step
+Root Mean Squared Error: 0.1400470733726574
+R2 Score: 0.9395801953383076
+136/136 [==============================] - 0s 318us/step
+Root Mean Squared Error: 0.18445642280835153
+R2 Score: 0.9553217143975529
+
+
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 75)                1500      
+                                                                 
+ dense_1 (Dense)             (None, 75)                5700      
+                                                                 
+ dense_2 (Dense)             (None, 75)                5700      
+                                                                 
+ dense_3 (Dense)             (None, 75)                5700      
+                                                                 
+ dense_4 (Dense)             (None, 1)                 76        
+                                                                 
+=================================================================
+Total params: 18,676
+Trainable params: 18,676
+Non-trainable params: 0
+_________________________________________________________________
+{'num_nodes': 75, 'num_layers': 4, 'dropout': False, 'activation': 'sigmoid', 
+'learning_rate': 0.01, 'optimizer': 'rmsprop', 'batch_size': 64, 
+'tuner/epochs': 1000, 'tuner/initial_epoch': 334, 'tuner/bracket': 4, 
+'tuner/round': 4, 'tuner/trial_id': '1823', 'num_nodes_0': 75, 
+'dropout-normalization': False, 'num_nodes_1': 75, 'num_nodes_2': 75, 
+'num_nodes_3': 75}
+
+
+---------------------------------------------------
+ARTIFICIAL NEURAL NETWORK 7 (whole_data_shuffled_7_feats-V1)
+---------------------------------------------------
+541/541 [==============================] - 0s 331us/step
+Root Mean Squared Error: 0.18226283000857665
+R2 Score: 0.8976642303252362
+136/136 [==============================] - 0s 331us/step
+Root Mean Squared Error: 0.34356117976448786
+R2 Score: 0.8450052076111488
+
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 85)                680       
+                                                                 
+ dense_1 (Dense)             (None, 145)               12470     
+                                                                 
+ dense_2 (Dense)             (None, 115)               16790     
+                                                                 
+ dense_3 (Dense)             (None, 1)                 116       
+                                                                 
+=================================================================
+Total params: 30,056
+Trainable params: 30,056
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 3, 'learning_rate': 0.01, 'optimizer': 'rmsprop', 
+'num_nodes_0': 85, 'activation': 'sigmoid', 
+'dropout-normalization': False, 'num_nodes_1': 145, 
+'num_nodes_2': 115, 'num_nodes_3': 125, 'num_nodes_4': 90,
+ 'batch_size': 128, 'tuner/epochs': 300, 
+ 'tuner/initial_epoch': 100, 'tuner/bracket': 2, 
+ 'tuner/round': 2, 'tuner/trial_id': '0631'}
+
+
+
+
+
+===========================================
+    CASE 3 STEADY STATE EXTRAPOLATION
+===========================================
+
+---------------------------------------------------
+ARTIFICIAL NEURAL NETWORK (stationary-time-series-V1)
+---------------------------------------------------
+
+313/313 [==============================] - 0s 396us/step
+Root Mean Squared Error: 0.06251192658359286
+R2 Score: 0.7561667790319911
+61/61 [==============================] - 0s 395us/step
+Root Mean Squared Error: 0.06268203694437764
+R2 Score: -0.2243209978140186
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 15, 25)            525       
+                                                                 
+ dense_1 (Dense)             (None, 15, 50)            1300      
+                                                                 
+ dense_2 (Dense)             (None, 15, 1)             51        
+                                                                 
+=================================================================
+Total params: 1,876
+Trainable params: 1,876
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 2, 'learning_rate': 0.001, 'optimizer': 'adam', 
+'num_nodes_0': 25, 'activation': 'tanh', 
+'dropout-normalization': False, 'num_nodes_1': 50, 
+'batch_size': 32, 'num_nodes_2': 25, 'tuner/epochs': 3, 
+'tuner/initial_epoch': 0, 'tuner/bracket': 4, 'tuner/round': 0}
+
+
+---------------------------------------------------
+LONG SHORT TERM MEMORY (stationary-V4)
+---------------------------------------------------
+Root Mean Squared Error: 0.04604688286201976
+R2 Score: 0.8676976434080654
+61/61 [==============================] - 0s 783us/step
+Root Mean Squared Error: 0.03556691435818585
+R2 Score: 0.6058137472253342
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ lstm (LSTM)                 (None, 30)                6120      
+                                                                 
+ dense (Dense)               (None, 1)                 31        
+                                                                 
+=================================================================
+Total params: 6,151
+Trainable params: 6,151
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 1, 'learning_rate': 0.01, 'optimizer': 'adam', 
+'activation': 'tanh', 'num_units_0': 30, 'dropout_rate_0': 0.0, 
+'num_units_1': 65, 'dropout_rate_1': 0.1, 'batch_size': 64, 
+'num_units_2': 45, 'dropout_rate_2': 0.4, 'tuner/epochs': 3, 
+'tuner/initial_epoch': 0, 'tuner/bracket': 4, 'tuner/round': 0}
+-------------------------------------
+
+
+
+
+===========================================
+    CASE 4 COMPLETE DATA EXTRAPOLATION
+===========================================
+
+---------------------------------------------------
+ARTIFICIAL NEURAL NETWORK (transient-time-series-V1)
+---------------------------------------------------
+
+588/588 [==============================] - 0s 388us/step
+Root Mean Squared Error: 0.5956749174353673
+R2 Score: 0.2229812080851079
+88/88 [==============================] - 0s 382us/step
+Root Mean Squared Error: 0.47635780903179414
+R2 Score: -1.876353902626207
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 15, 50)            1050      
+                                                                 
+ dropout (Dropout)           (None, 15, 50)            0         
+                                                                 
+ batch_normalization (BatchN  (None, 15, 50)           200       
+ ormalization)                                                   
+                                                                 
+ dense_1 (Dense)             (None, 15, 1)             51        
+                                                                 
+=================================================================
+Total params: 1,301
+Trainable params: 1,201
+Non-trainable params: 100
+_________________________________________________________________
+{'num_layers': 1, 'learning_rate': 0.01, 'optimizer': 'adam', 
+'num_nodes_0': 50, 'activation': 'tanh', 
+'dropout-normalization': True, 'num_nodes_1': 50, 
+'batch_size': 64, 'num_nodes_2': 75, 'tuner/epochs': 67, 
+'tuner/initial_epoch': 23, 'tuner/bracket': 4, 
+'tuner/round': 3, 'tuner/trial_id': '0131'}
+
+
+---------------------------------------------------
+LONG SHORT TERM MEMORY (whole-V3)
+---------------------------------------------------
+588/588 [==============================] - 3s 5ms/step
+Root Mean Squared Error: 0.43781715630586
+R2 Score: 0.5802425167838191
+88/88 [==============================] - 1s 6ms/step
+Root Mean Squared Error: 0.2800986607138114
+R2 Score: 0.005515986112256566
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ lstm (LSTM)                 (None, 15, 160)           115840    
+                                                                 
+ lstm_1 (LSTM)               (None, 120)               134880    
+                                                                 
+ dropout (Dropout)           (None, 120)               0         
+                                                                 
+ dense (Dense)               (None, 1)                 121       
+                                                                 
+=================================================================
+Total params: 250,841
+Trainable params: 250,841
+Non-trainable params: 0
+_________________________________________________________________
+{'num_layers': 2, 'learning_rate': 0.001, 'optimizer': 'adam', 
+'activation': 'sigmoid', 'num_units_0': 160, 'dropout_rate_0': 0.0,
+ 'num_units_1': 120, 'dropout_rate_1': 0.4, 'batch_size': 128, 
+ 'num_units_2': 120, 'dropout_rate_2': 0.2, 'tuner/epochs': 12, 
+ 'tuner/initial_epoch': 4, 'tuner/bracket': 3, 'tuner/round': 1,
+  'tuner/trial_id': '0164'}
+-------------------------------------
